@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
 
 namespace Lab19WpfApp1.ViewModels
 {
@@ -19,40 +20,90 @@ namespace Lab19WpfApp1.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
-        
-        private double radius;
-        public double Radius
-        {
-            get => radius;
-            set
-            {
-                radius = value;
-                OnPropertyChanged();
-            }
-        }
 
-        private double lenght;
-        public double Lenght
+        private string display=null;
+        public string Display
         {
-            get => lenght;
+            get => display;
             set
             {
-                lenght = value;
+                display = value;
                 OnPropertyChanged();
             }
         }
-        public ICommand GetLenghtCommand { get; }
-        private void OnGetLenghtCommandExecute(object p) //выполнение команды
+        private int num1;
+        public int Num1
         {
-            Lenght = Arithmetics.GetLenght(Radius);
+            get => num1;
+            set
+            {
+
+            }
         }
-        private bool CanGetLenghtCommandExecuted(object p)
+        //ввод данных
+        public ICommand AddToDisplayCommand { get; } 
+        private void OnAddToDisplayCommandExecute(object p)
+        {
+            if (Display == double.NaN.ToString() || Display == "0")
+            {
+                Display = "";
+            }
+            Display += p as string;
+        }
+        private bool CanAddToDIsplayCommandExecuted(object p)
         {
             return true;
         }
+        //Вычисление строки
+        public ICommand SolveCommand { get; }
+        private void OnSolveCommand(object p)
+        {
+            var expression = Display;
+            Display = Arithmetics.Parse(expression).ToString();
+        }
+        private bool CanSolveCommandExecuted(object p)
+        {
+            return true;
+        }
+      
+        //Очистка строки ввода
+        public ICommand ResetCommand { get; }
+        private void OnResetCommandEcexute(object p)
+        {
+            Display = "";
+        }
+        private bool CanResetCommandExecuted(object p)
+        {
+            return true;
+        }
+
+        //backspace
+        public ICommand EraseCommand { get; }
+        private void OnEraseCommandExecuted(object p)
+        {
+           Display = Display.Remove((Display.Length - 1), 1);
+        }
+        private bool CanEraseCommandExecuted(object p)
+        {
+            if (Display == "")
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
+
         public MainWindowViewModel()
         {
-            GetLenghtCommand = new RelayCommand(OnGetLenghtCommandExecute, CanGetLenghtCommandExecuted);
+            
+            AddToDisplayCommand = new RelayCommand(OnAddToDisplayCommandExecute, CanAddToDIsplayCommandExecuted);
+            SolveCommand = new RelayCommand(OnSolveCommand, CanSolveCommandExecuted);
+            ResetCommand = new RelayCommand(OnResetCommandEcexute, CanResetCommandExecuted);
+            EraseCommand = new RelayCommand(OnEraseCommandExecuted, CanEraseCommandExecuted);
         }
     }
 }

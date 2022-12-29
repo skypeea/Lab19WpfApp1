@@ -6,14 +6,52 @@
         xmlns:local="clr-namespace:Lab19WpfApp1"
         xmlns:vm="clr-namespace:Lab19WpfApp1.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Calc" Height="450" Width="500">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    
-    <StackPanel>
-        <TextBox Text="{Binding Path=Radius}"/>
-        <Button Content="Длина окружности" Command="{Binding Path=GetLenghtCommand}"/>
-        <TextBox Text="{Binding Path=Lenght}"/>
-    </StackPanel>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Background" Value="AliceBlue"/>
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="#FFB7BCC8" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Foreground="White" TextAlignment="Right" FontSize="26" Text="{Binding Path=Display}"/>
+        <UniformGrid Rows="5" Columns="4" Grid.Row="1" >
+            <Button Content="C" Command="{Binding Path=ResetCommand}"/>
+            <Button Content="&lt;-" Command="{Binding Path=EraseCommand}"/>
+
+            <Button Content="(" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="("/>
+            <Button Content=")" Command="{Binding Path=AddToDisplayCommand}" CommandParameter=")"/>
+            <Button Content="1" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="1"/>
+            <Button Content="2" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="2"/>
+            <Button Content="3" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="3"/>
+            <Button Content="+" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="+"/>
+            <Button Content="4" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="4"/>
+            <Button Content="5" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="5"/>
+            <Button Content="6" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="6"/>
+            <Button Content="-" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="-"/>
+            <Button Content="7" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="7"/>
+            <Button Content="8" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="8"/>
+            <Button Content="9" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="9"/>
+            <Button Content="*" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="*"/>
+            <Button Content="," Command="{Binding Path=AddToDisplayCommand}" CommandParameter="."/>
+            <Button Content="0" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="0"/>
+            <Button Content="=" Command="{Binding Path=SolveCommand}" BorderThickness="2" BorderBrush="#FF130505"/>
+            <Button Content="/" Command="{Binding Path=AddToDisplayCommand}" CommandParameter="/"/>
+        </UniformGrid>
+    </Grid>
 </Window>
